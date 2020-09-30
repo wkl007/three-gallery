@@ -1,10 +1,20 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Home',
-    component: () => import(/* webpackChunkName: "about" */ '@/views/Home.vue')
+    name: 'Index',
+    component: () => import(/* webpackChunkName: "index" */ '@/views/index.vue')
+  },
+  {
+    path: '/demo1',
+    name: 'Demo1',
+    component: () => import(/* webpackChunkName: "demo1" */ '@/views/demo1.vue')
+  },
+  {
+    path: '/demo2',
+    name: 'Demo2',
+    component: () => import(/* webpackChunkName: "demo2" */ '@/views/demo2.vue')
   },
   {
     path: '/about',
@@ -14,8 +24,15 @@ const routes: Array<RouteRecordRaw> = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
+  history: createWebHashHistory(process.env.BASE_URL),
+  scrollBehavior: (to, from, savedPosition) => {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { left: 0, top: 0 }
+    }
+  }
 })
 
 export default router
