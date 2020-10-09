@@ -7,17 +7,18 @@
     >
       <template v-slot:renderItem="{item,index}">
         <a-list-item>
-          <a-card hoverable @click="handleCardClick(item,index)">
+          <a-card
+            hoverable
+            @click="handleCardClick(item,index)"
+          >
             <template v-slot:cover>
               <img
+                class="image"
                 alt="example"
-                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                :src="item.imageUrl"
               />
             </template>
-            <a-card-meta
-              :title="item.name"
-              :description="item.description"
-            />
+            <a-card-meta :title="item.name"/>
           </a-card>
         </a-list-item>
       </template>
@@ -29,10 +30,12 @@
 import { defineComponent, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 
+const imageUrl = 'https://pic-go-1256738511.cos.ap-chengdu.myqcloud.com/images/'
+
 interface List {
   name: string;
   path: string;
-  description: string;
+  imageUrl: string;
 }
 
 export default defineComponent({
@@ -43,14 +46,29 @@ export default defineComponent({
     // 列表
     const list: Array<List> = reactive([
       {
-        name: 'demo1',
-        path: '/demo1',
-        description: 'Three.js Vue Options API演示'
+        name: 'Vue Options API演示',
+        path: '/gallery1',
+        imageUrl: `${imageUrl}20201009140839.png`
       },
       {
-        name: 'demo2',
-        path: '/demo2',
-        description: 'Three.js Vue Composition API演示'
+        name: 'Vue Composition API演示',
+        path: '/gallery2',
+        imageUrl: `${imageUrl}20201009140839.png`
+      },
+      {
+        name: '纹理动画',
+        path: '/gallery3',
+        imageUrl: `${imageUrl}20201009142604.png`
+      },
+      {
+        name: '地球模型',
+        path: '/gallery4',
+        imageUrl: `${imageUrl}20201009171330.png`
+      },
+      {
+        name: '枪模型',
+        path: '/gallery5',
+        imageUrl: `${imageUrl}20201009172608.png`
       }
     ])
 
@@ -75,6 +93,12 @@ export default defineComponent({
   .title {
     padding: 40px 0;
     text-align: center;
+  }
+
+  .image {
+    width: 286px;
+    height: 174px;
+    object-fit: cover;
   }
 }
 </style>

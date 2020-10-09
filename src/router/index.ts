@@ -7,14 +7,29 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "index" */ '@/views/index.vue')
   },
   {
-    path: '/demo1',
-    name: 'Demo1',
-    component: () => import(/* webpackChunkName: "demo1" */ '@/views/demo1.vue')
+    path: '/gallery1',
+    name: 'Gallery1',
+    component: () => import(/* webpackChunkName: "gallery1" */ '@/views/gallery1.vue')
   },
   {
-    path: '/demo2',
-    name: 'Demo2',
-    component: () => import(/* webpackChunkName: "demo2" */ '@/views/demo2.vue')
+    path: '/gallery2',
+    name: 'Gallery2',
+    component: () => import(/* webpackChunkName: "gallery2" */ '@/views/gallery2.vue')
+  },
+  {
+    path: '/gallery3',
+    name: 'Gallery3',
+    component: () => import(/* webpackChunkName: "gallery3" */ '@/views/gallery3.vue')
+  },
+  {
+    path: '/gallery4',
+    name: 'Gallery4',
+    component: () => import(/* webpackChunkName: "gallery4" */ '@/views/gallery4.vue')
+  },
+  {
+    path: '/gallery5',
+    name: 'Gallery5',
+    component: () => import(/* webpackChunkName: "gallery5" */ '@/views/gallery5.vue')
   },
   {
     path: '/about',

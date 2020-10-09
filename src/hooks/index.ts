@@ -1,39 +1,32 @@
-<template>
-  <div id="three" ref="three"></div>
-</template>
-
-<script lang="ts">
-import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import * as THREE from 'three'
-import {
-  AmbientLight,
-  AxesHelper,
-  DirectionalLight,
-  Geometry,
-  Material,
-  Mesh,
-  OrthographicCamera,
-  Scene,
-  WebGLRenderer
-} from 'three'
+import { AmbientLight, AxesHelper, DirectionalLight, OrthographicCamera, Scene, WebGLRenderer } from 'three'
 import Stats from 'stats.js'
 
 const OrbitControls = require('three-orbit-controls')(THREE)
 
-let scene: Scene,
-  camera: OrthographicCamera,
-  renderer: WebGLRenderer,
-  point: DirectionalLight,
-  ambient: AmbientLight,
-  axesHelper: AxesHelper,
-  geometry: Geometry,
-  material: Material,
-  mesh: Mesh,
-  stats: Stats,
-  controls,
-  animation: number
+interface UseThree {
+  initScene: () => Scene;
+  initCamera: () => OrthographicCamera;
+  initRenderer: (el: HTMLElement) => WebGLRenderer;
+  initLight: () => void;
+  initControls: () => void;
+  initHelpers: () => void;
+  initStats: (el: HTMLElement) => Stats;
+  windowResize: () => void;
+}
 
-function useThree () {
+/**
+ * Three.js hooks
+ * @param scene
+ * @param camera
+ * @param renderer
+ * @param point
+ * @param ambient
+ * @param axesHelper
+ * @param stats
+ * @param controls
+ */
+export function useThree (scene: Scene, camera: OrthographicCamera, renderer: WebGLRenderer, point: DirectionalLight, ambient: AmbientLight, axesHelper: AxesHelper, stats: Stats, controls: any): UseThree {
   const x: number = window.innerWidth // 宽
   const y: number = window.innerHeight // 高
   const pixelRatio: number = window.devicePixelRatio // dpr
@@ -42,6 +35,7 @@ function useThree () {
   // 初始化场景
   function initScene () {
     scene = new THREE.Scene()
+    return scene
   }
 
   // 初始化创建
@@ -51,6 +45,7 @@ function useThree () {
     camera = new THREE.OrthographicCamera(-s * k, s * k, s, -s, 1, 1000)
     camera.position.set(200, 200, 200)
     camera.lookAt(scene.position)
+    return camera
   }
 
   // 初始化渲染器
@@ -60,6 +55,7 @@ function useThree () {
     renderer.setSize(x, y) // 设置渲染区域尺寸
     renderer.setClearColor(0xb9d3ff) // 设置背景颜色
     el.appendChild(renderer.domElement)
+    return renderer
   }
 
   // 初始化光源
@@ -92,6 +88,7 @@ function useThree () {
     stats.dom.style.left = '0px'
     stats.dom.style.top = '0px'
     el && el.appendChild(stats.dom)
+    return stats
   }
 
   // 窗口缩放事件
@@ -123,69 +120,3 @@ function useThree () {
     windowResize
   }
 }
-
-export default defineComponent({
-  name: 'Demo2',
-  setup () {
-    const three = ref<HTMLElement>(document.createElement('div'))
-    const {
-      initScene,
-      initCamera,
-      initRenderer,
-      initLight,
-      initControls,
-      initHelpers,
-      initStats,
-      windowResize
-    } = useThree()
-
-    // 初始化模型
-    function initModel () {
-      geometry = new THREE.SphereGeometry(100, 25, 25)
-      material = new THREE.MeshPhongMaterial({
-        color: 0xff00ff,
-        specular: 0x4488ee,
-        shininess: 20
-      })
-      mesh = new THREE.Mesh(geometry, material)
-      scene.add(mesh)
-    }
-
-    // 渲染
-    function render () {
-      scene && renderer.render(scene, camera)
-      stats && stats.update()
-      animation = requestAnimationFrame(render)
-      mesh.rotateY(0.001)
-    }
-
-    // 初始化
-    function init (el: HTMLElement) {
-      initScene()
-      initCamera()
-      initRenderer(el)
-      initLight()
-      initControls()
-      initHelpers()
-      initStats(el)
-      initModel()
-      render()
-    }
-
-    onMounted(() => {
-      const el = three.value
-      init(el)
-      window.addEventListener('resize', windowResize)
-    })
-
-    onBeforeUnmount(() => {
-      cancelAnimationFrame(animation)
-      window.removeEventListener('resize', windowResize)
-    })
-
-    return {
-      three
-    }
-  }
-})
-</script>

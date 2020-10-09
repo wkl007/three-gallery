@@ -1,8 +1,13 @@
-import moment, { MomentInput, unitOfTime } from 'moment'
+import Moment, { MomentInput, unitOfTime } from 'moment'
 import 'moment/locale/zh-cn'
 import numeral from 'numeral'
 
-moment.locale('zh-cn')
+Moment.locale('zh-cn')
+
+/**
+ * moment实例
+ */
+export const moment = Moment
 
 /**
  * 判断url

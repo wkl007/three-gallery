@@ -5,17 +5,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import * as THREE from 'three'
-import {
-  AmbientLight,
-  AxesHelper,
-  DirectionalLight,
-  Geometry,
-  Material,
-  Mesh,
-  OrthographicCamera,
-  Scene,
-  WebGLRenderer
-} from 'three'
+import { AmbientLight, AxesHelper, DirectionalLight, Mesh, OrthographicCamera, Scene, WebGLRenderer } from 'three'
 import Stats from 'stats.js'
 
 const OrbitControls = require('three-orbit-controls')(THREE)
@@ -31,8 +21,6 @@ let scene: Scene,
   point: DirectionalLight,
   ambient: AmbientLight,
   axesHelper: AxesHelper,
-  geometry: Geometry,
-  material: Material,
   mesh: Mesh,
   stats: Stats,
   animation: number,
@@ -40,7 +28,7 @@ let scene: Scene,
   controls
 
 export default defineComponent({
-  name: 'Demo1',
+  name: 'gallery1',
   mounted () {
     three = this.$refs.three as HTMLElement
     this.init(three)
@@ -113,8 +101,8 @@ export default defineComponent({
     },
     // 初始化模型
     initModel () {
-      geometry = new THREE.SphereGeometry(100, 25, 25)
-      material = new THREE.MeshPhongMaterial({
+      const geometry = new THREE.SphereGeometry(100, 25, 25)
+      const material = new THREE.MeshPhongMaterial({
         color: 0xff00ff,
         specular: 0x4488ee,
         shininess: 20
