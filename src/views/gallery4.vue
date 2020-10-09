@@ -31,7 +31,7 @@ let scene: Scene,
   texture: Texture
 
 export default defineComponent({
-  name: 'gallery3',
+  name: 'gallery4',
   setup () {
     const three = ref<HTMLElement>(document.createElement('div'))
     const {

@@ -5,7 +5,16 @@
 <script lang="ts">
 import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import * as THREE from 'three'
-import { AmbientLight, AxesHelper, DirectionalLight, OrthographicCamera, Scene, Texture, WebGLRenderer } from 'three'
+import {
+  AmbientLight,
+  AnimationMixer,
+  AxesHelper, Clock,
+  DirectionalLight,
+  OrthographicCamera,
+  Scene,
+  WebGLRenderer
+} from 'three'
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader'
 import Stats from 'stats.js'
 import { useThree } from '@/hooks'
 
@@ -18,10 +27,11 @@ let scene: Scene,
   stats: Stats,
   controls: never,
   animation: number,
-  texture: Texture
+  mixer: AnimationMixer
+const clock: Clock = new THREE.Clock()
 
 export default defineComponent({
-  name: 'gallery5',
+  name: 'gallery6',
   setup () {
     const three = ref<HTMLElement>(document.createElement('div'))
     const {
@@ -37,22 +47,16 @@ export default defineComponent({
 
     // 初始化模型
     function initModel () {
-      const Loader = new THREE.ObjectLoader()
-      Loader.load('https://cache-1256738511.cos.ap-chengdu.myqcloud.com/images/gun/model.json', (mesh: any) => {
-        // TextureLoader创建一个纹理加载器对象，可以加载图片作为几何体纹理
-        const textureLoader = new THREE.TextureLoader()
-        // 加载纹理贴图
-        const texture = textureLoader.load('https://cache-1256738511.cos.ap-chengdu.myqcloud.com/images/gun/diffuse.jpg')
-        // 加载法线贴图
-        const textureNormal = textureLoader.load('https://cache-1256738511.cos.ap-chengdu.myqcloud.com/images/gun/normal.jpg')
-        mesh.material = new THREE.MeshPhongMaterial({
-          map: texture,
-          normalMap: textureNormal, // 法线贴图
-          normalScale: new THREE.Vector2(3, 3) // 设置深浅程度，默认值(1,1)。
-        })
-        mesh.scale.set(200, 200, 200)
-        mesh.rotateY(Math.PI)
-        scene.add(mesh)
+      const loader = new FBXLoader()
+      loader.load('https://cache-1256738511.cos.ap-chengdu.myqcloud.com/models/14.4/SambaDancing.fbx', (object: any) => {
+        scene.add(object)
+        object.translateY(-80)
+        mixer = new THREE.AnimationMixer(object)
+        const AnimationAction = mixer.clipAction(object.animations[0])
+        // AnimationAction.timeScale = 1 //默认1，可以调节播放速度
+        // AnimationAction.loop = THREE.LoopOnce //不循环播放
+        // AnimationAction.clampWhenFinished = true//暂停在最后一帧播放的状态
+        AnimationAction.play()
       })
     }
 
@@ -60,6 +64,7 @@ export default defineComponent({
     function render () {
       scene && renderer.render(scene, camera)
       stats && stats.update()
+      mixer && mixer.update(clock.getDelta())
       animation = requestAnimationFrame(render)
     }
 

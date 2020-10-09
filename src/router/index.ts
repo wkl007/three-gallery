@@ -32,6 +32,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "gallery5" */ '@/views/gallery5.vue')
   },
   {
+    path: '/gallery6',
+    name: 'Gallery6',
+    component: () => import(/* webpackChunkName: "gallery6" */ '@/views/gallery6.vue')
+  },
+  {
+    path: '/gallery7',
+    name: 'Gallery7',
+    component: () => import(/* webpackChunkName: "gallery7" */ '@/views/gallery7.vue')
+  },
+  {
     path: '/about',
     name: 'About',
     component: () => import(/* webpackChunkName: "about" */ '@/views/About.vue')

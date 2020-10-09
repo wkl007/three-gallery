@@ -69,6 +69,16 @@ export default defineComponent({
         name: '枪模型',
         path: '/gallery5',
         imageUrl: `${imageUrl}20201009172608.png`
+      },
+      {
+        name: '加载FBX并解析骨骼动画',
+        path: '/gallery6',
+        imageUrl: `${imageUrl}20201009181212.png`
+      },
+      {
+        name: '加载obj手镯',
+        path: '/gallery7',
+        imageUrl: `${imageUrl}20201009190049.png`
       }
     ])
 
