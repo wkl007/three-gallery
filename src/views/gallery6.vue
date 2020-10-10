@@ -57,6 +57,8 @@ export default defineComponent({
         // AnimationAction.loop = THREE.LoopOnce //不循环播放
         // AnimationAction.clampWhenFinished = true//暂停在最后一帧播放的状态
         AnimationAction.play()
+      }, ({ loaded, total }) => {
+        console.log(`进度：${Math.floor(loaded / total * 100)}`)
       })
     }
 

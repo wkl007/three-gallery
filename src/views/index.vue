@@ -79,6 +79,16 @@ export default defineComponent({
         name: '加载obj手镯',
         path: '/gallery7',
         imageUrl: `${imageUrl}20201009190049.png`
+      },
+      {
+        name: '心脏模型',
+        path: '/gallery8',
+        imageUrl: `${imageUrl}20201010165347.png`
+      },
+      {
+        name: '地球大气模型',
+        path: '/gallery9',
+        imageUrl: `${imageUrl}20201010183425.png`
       }
     ])
 

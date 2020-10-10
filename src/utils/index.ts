@@ -71,3 +71,13 @@ export function dateDiff (date1: MomentInput, date2: MomentInput, unitOfTime: un
 export function numberFormat (number: number, format = '0,00.00'): string {
   return numeral(number).format(format)
 }
+
+/**
+ * 空数据格式化
+ * @param text
+ * @param extra
+ * @param format
+ */
+export function emptyFormat (text: string, extra: string, format = '暂无'): string {
+  return text ? `${text}${extra}` : format
+}
