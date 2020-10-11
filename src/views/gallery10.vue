@@ -11,7 +11,7 @@ import {
   AxesHelper,
   Clock,
   DirectionalLight,
-  Group,
+  Mesh,
   OrthographicCamera,
   Scene,
   WebGLRenderer
@@ -28,14 +28,14 @@ let scene: Scene,
   stats: Stats,
   controls: never,
   animation: number,
-  group: Group,
   uniforms: any,
-  mixer: AnimationMixer
+  mixer: AnimationMixer,
+  mesh: Mesh
 
 const clock: Clock = new THREE.Clock()
 
 export default defineComponent({
-  name: 'gallery9',
+  name: 'gallery10',
   setup () {
     const three = ref<HTMLElement>(document.createElement('div'))
     const {
@@ -51,42 +51,13 @@ export default defineComponent({
 
     // 初始化模型
     function initModel () {
-      const url = 'https://cache-1256738511.cos.ap-chengdu.myqcloud.com/images/earth/'
+      const url = 'https://cache-1256738511.cos.ap-chengdu.myqcloud.com/images/sun/'
       const textureLoader = new THREE.TextureLoader()
-      // 创建组
-      group = new THREE.Group()
-      // 加载light贴图
-      const textureSprite = textureLoader.load(`${url}light.png`)
-      // 创建点精灵模型
-      const spriteMaterial = new THREE.SpriteMaterial({ map: textureSprite, transparent: true, opacity: 0.6 })
-      const sprite = new THREE.Sprite(spriteMaterial)
-      sprite.scale.set(245, 245, 1)
-      group.add(sprite)
 
-      // 地球模型
+      // 太阳模型
       const geometry = new THREE.SphereGeometry(100, 100, 100)
-      // 加载纹理贴图
-      const texture = textureLoader.load(`${url}earth.png`)
-      // 加载法线贴图
-      const textureNormal = textureLoader.load(`${url}earth_normal.png`)
-      // 加载高光贴图
-      const textureSpecular = textureLoader.load(`${url}earth_spec.png`)
-
-      const material = new THREE.MeshPhongMaterial({
-        map: texture,
-        normalMap: textureNormal, // 法线贴图
-        normalScale: new THREE.Vector2(2.9, 2.9), // 设置深浅程度，默认值(1,1)。
-        shininess: 40, // 高光部分的亮度，默认30
-        specularMap: textureSpecular, // 高光贴图
-        transparent: true,
-        opacity: 0.7
-      })
-      const mesh = new THREE.Mesh(geometry, material)
-
-      // 大气模型
-      const geometry2 = new THREE.SphereGeometry(100.001, 100, 100)
       const texture1 = textureLoader.load(`${url}noise.png`)
-      const texture2 = textureLoader.load(`${url}atmosphere.png`)
+      const texture2 = textureLoader.load(`${url}atmosphere.jpg`)
       texture1.wrapS = THREE.RepeatWrapping
       texture1.wrapT = THREE.RepeatWrapping
       texture2.wrapS = THREE.RepeatWrapping
@@ -95,19 +66,16 @@ export default defineComponent({
       uniforms = {
         time: { value: 1 },
         texture1: { value: texture1 },
-        texture2: { value: texture2 },
-        opacity: { value: 0.4 }
+        texture2: { value: texture2 }
       }
-      const material2 = new THREE.ShaderMaterial({
+      const material = new THREE.ShaderMaterial({
         uniforms,
         vertexShader: 'varying vec2 texCoord;void main(){texCoord = uv;vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );gl_Position = projectionMatrix * mvPosition;}',
-        fragmentShader: 'uniform float time;uniform sampler2D texture1;uniform sampler2D texture2;varying vec2 texCoord;uniform float opacity;void main(  ) {vec4 noise = texture2D( texture1, texCoord );vec2 T1 = texCoord + vec2( 1.5, -1.5 ) * time  * 0.01;vec2 T2 = texCoord + vec2( -0.5, 2.0 ) * time *  0.01;T1.x -= noise.r * 2.0;T1.y += noise.g * 4.0;T2.x += noise.g * 0.2;T2.y += noise.b * 0.2;float p = texture2D( texture1, T1 * 2.0 ).a + 0.25;vec4 color = texture2D( texture2, T2 );vec4 temp = color * 2.0 * ( vec4( p, p, p, p ) ) + ( color * color );  gl_FragColor = vec4(temp.rgb,temp.a*opacity);}',
-        transparent: true
+        fragmentShader: 'uniform float time;uniform sampler2D texture1;uniform sampler2D texture2;varying vec2 texCoord;uniform float opacity;void main(  ) {vec4 noise = texture2D( texture1, texCoord );vec2 T1 = texCoord + vec2( 1.5, -1.5 ) * time  * 0.01;vec2 T2 = texCoord + vec2( -0.5, 2.0 ) * time *  0.01;T1.x -= noise.r * 2.0;T1.y += noise.g * 4.0;T2.x += noise.g * 0.2;T2.y += noise.b * 0.2;float p = texture2D( texture1, T1 * 2.0 ).a + 0.25;vec4 color = texture2D( texture2, T2 );vec4 temp = color * 2.0 * ( vec4( p, p, p, p ) ) + ( color * color );  gl_FragColor = vec4(temp.rgb,temp.a*opacity);}'
       })
-      const mesh2 = new THREE.Mesh(geometry2, material2)
-      group.add(mesh, mesh2)
+      mesh = new THREE.Mesh(geometry, material)
 
-      scene.add(group)
+      scene.add(mesh)
     }
 
     // 初始化加载动画
@@ -115,8 +83,8 @@ export default defineComponent({
       // 创建位置关键帧对象
       const posTrack = new THREE.KeyframeTrack('.scale', [0, 5], [0.01, 0.01, 0.01, 1, 1, 1])
       const clip = new THREE.AnimationClip('default', 5, [posTrack])
-      mixer = new THREE.AnimationMixer(group)
-      const AnimationAction = mixer.clipAction(clip, group)
+      mixer = new THREE.AnimationMixer(mesh)
+      const AnimationAction = mixer.clipAction(clip, mesh)
       AnimationAction.loop = THREE.LoopOnce // 不循环播放
       AnimationAction.clampWhenFinished = true // 暂停在最后一帧播放的状态
       AnimationAction.play()
@@ -130,7 +98,7 @@ export default defineComponent({
       stats && stats.update()
       animation = requestAnimationFrame(render)
       uniforms.time.value += delta
-      group.rotation.y -= 0.005
+      mesh.rotation.y -= 0.005
       mixer && mixer.update(delta)
     }
 

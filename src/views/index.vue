@@ -89,6 +89,16 @@ export default defineComponent({
         name: '地球大气模型',
         path: '/gallery9',
         imageUrl: `${imageUrl}20201010183425.png`
+      },
+      {
+        name: '太阳模型',
+        path: '/gallery10',
+        imageUrl: `${imageUrl}20201011123325.png`
+      },
+      {
+        name: '虫洞粒子特效',
+        path: '/gallery11',
+        imageUrl: `${imageUrl}20201011134428.png`
       }
     ])
 
