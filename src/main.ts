@@ -3,16 +3,13 @@ import App from '@/App.vue'
 import router from '@/router'
 import store from '@/store'
 import '@/configs/registerServiceWorker'
-import { Avatar, Button, Card, ConfigProvider, List } from 'ant-design-vue'
+import { useAntd } from '@/configs/antd'
 
 const app = createApp(App)
 
+useAntd(app)
+
 app
-  .use(Avatar)
-  .use(Button)
-  .use(Card)
-  .use(List)
-  .use(ConfigProvider)
   .use(store)
   .use(router)
   .mount('#app')
