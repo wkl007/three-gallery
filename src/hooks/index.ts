@@ -1,15 +1,17 @@
 import * as THREE from 'three'
-import { AmbientLight, AxesHelper, DirectionalLight, OrthographicCamera, Scene, WebGLRenderer } from 'three'
+import { AmbientLight, AxesHelper, Clock, DirectionalLight, OrthographicCamera, Scene, WebGLRenderer } from 'three'
+import CameraControls from 'camera-controls'
 import Stats from 'stats.js'
 
-const OrbitControls = require('three-orbit-controls')(THREE)
+CameraControls.install({ THREE })
 
 interface UseThree {
   initScene: () => Scene;
   initCamera: () => OrthographicCamera;
   initRenderer: (el: HTMLElement) => WebGLRenderer;
   initLight: () => void;
-  initControls: () => void;
+  initControls: () => CameraControls;
+  initClock: () => Clock;
   initHelpers: () => void;
   initStats: (el: HTMLElement) => Stats;
   windowResize: () => void;
@@ -24,9 +26,10 @@ interface UseThree {
  * @param ambient
  * @param axesHelper
  * @param stats
- * @param controls
+ * @param cameraControls
+ * @param clock
  */
-export function useThree (scene: Scene, camera: OrthographicCamera, renderer: WebGLRenderer, point: DirectionalLight, ambient: AmbientLight, axesHelper: AxesHelper, stats: Stats, controls: any): UseThree {
+export function useThree (scene: Scene, camera: OrthographicCamera, renderer: WebGLRenderer, point: DirectionalLight, ambient: AmbientLight, axesHelper: AxesHelper, stats: Stats, cameraControls: CameraControls, clock: Clock): UseThree {
   const x: number = window.innerWidth // 宽
   const y: number = window.innerHeight // 高
   const pixelRatio: number = window.devicePixelRatio // dpr
@@ -71,7 +74,15 @@ export function useThree (scene: Scene, camera: OrthographicCamera, renderer: We
 
   // 初始化轨道控制插件
   function initControls () {
-    controls = new OrbitControls(camera, renderer.domElement)
+    cameraControls = new CameraControls(camera, renderer.domElement)
+    cameraControls.draggingDampingFactor = 1 // 拖动阻尼惯性
+    return cameraControls
+  }
+
+  // 初始化clock
+  function initClock () {
+    clock = new Clock()
+    return clock
   }
 
   // 初始化辅助内容
@@ -115,6 +126,7 @@ export function useThree (scene: Scene, camera: OrthographicCamera, renderer: We
     initRenderer,
     initLight,
     initControls,
+    initClock,
     initHelpers,
     initStats,
     windowResize

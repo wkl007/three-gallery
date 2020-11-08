@@ -3,11 +3,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
-import * as THREE from 'three'
-import {
+import type {
   AmbientLight,
-  AxesHelper,
+  AxesHelper, Clock,
   DirectionalLight,
   Mesh,
   OrthographicCamera,
@@ -15,7 +13,10 @@ import {
   Texture,
   WebGLRenderer
 } from 'three'
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
+import * as THREE from 'three'
 import Stats from 'stats.js'
+import CameraControls from 'camera-controls'
 import { useThree } from '@/hooks'
 
 let scene: Scene,
@@ -25,8 +26,9 @@ let scene: Scene,
   ambient: AmbientLight,
   axesHelper: AxesHelper,
   mesh: Mesh,
+  cameraControls: CameraControls,
+  clock: Clock,
   stats: Stats,
-  controls: never,
   animation: number,
   texture: Texture
 
@@ -42,8 +44,9 @@ export default defineComponent({
       initHelpers,
       initStats,
       windowResize,
-      initControls
-    } = useThree(scene, camera, renderer, point, ambient, axesHelper, stats, controls)
+      initControls,
+      initClock
+    } = useThree(scene, camera, renderer, point, ambient, axesHelper, stats, cameraControls, clock)
 
     // 初始化模型
     function initModel () {
@@ -97,6 +100,7 @@ export default defineComponent({
     function render () {
       scene && renderer.render(scene, camera)
       stats && stats.update()
+      cameraControls && cameraControls.update(clock.getDelta())
       animation = requestAnimationFrame(render)
       // 使用加减法可以设置不同的运动方向
       // 设置纹理偏移
@@ -111,8 +115,9 @@ export default defineComponent({
       renderer = initRenderer(el)
       renderer && renderer.setClearColor(0x000000)
       stats = initStats(el)
+      cameraControls = initControls()
+      clock = initClock()
       initLight()
-      initControls()
       initHelpers()
       initModel()
       render()
@@ -126,6 +131,7 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       cancelAnimationFrame(animation)
+      cameraControls && cameraControls.dispose()
       window.removeEventListener('resize', windowResize)
     })
 

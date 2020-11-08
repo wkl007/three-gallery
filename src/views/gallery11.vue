@@ -3,11 +3,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
-import * as THREE from 'three'
-import {
+import type {
   AmbientLight,
   AxesHelper,
+  Clock,
   DirectionalLight,
   Mesh,
   OrthographicCamera,
@@ -16,7 +15,10 @@ import {
   Vector3,
   WebGLRenderer
 } from 'three'
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
+import * as THREE from 'three'
 import Stats from 'stats.js'
+import CameraControls from 'camera-controls'
 import { useThree } from '@/hooks'
 
 let scene: Scene,
@@ -27,7 +29,8 @@ let scene: Scene,
   ambient: AmbientLight,
   axesHelper: AxesHelper,
   stats: Stats,
-  controls: never,
+  cameraControls: CameraControls,
+  clock: Clock,
   animation: number,
   mesh: Mesh,
   points: Array<Vector3>
@@ -44,7 +47,7 @@ export default defineComponent({
       initLight,
       initHelpers,
       initStats
-    } = useThree(scene, camera1, renderer, point, ambient, axesHelper, stats, controls)
+    } = useThree(scene, camera1, renderer, point, ambient, axesHelper, stats, cameraControls, clock)
 
     // 初始化模型
     function initModel () {

@@ -3,11 +3,10 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
-import * as THREE from 'three'
-import {
+import type {
   AmbientLight,
   AxesHelper,
+  Clock,
   DirectionalLight,
   Mesh,
   OrthographicCamera,
@@ -15,7 +14,10 @@ import {
   Texture,
   WebGLRenderer
 } from 'three'
+import * as THREE from 'three'
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import Stats from 'stats.js'
+import CameraControls from 'camera-controls'
 import { useThree } from '@/hooks'
 
 let scene: Scene,
@@ -26,7 +28,8 @@ let scene: Scene,
   axesHelper: AxesHelper,
   mesh: Mesh,
   stats: Stats,
-  controls: never,
+  cameraControls: CameraControls,
+  clock: Clock,
   animation: number,
   texture: Texture
 
@@ -42,8 +45,9 @@ export default defineComponent({
       initHelpers,
       initStats,
       windowResize,
-      initControls
-    } = useThree(scene, camera, renderer, point, ambient, axesHelper, stats, controls)
+      initControls,
+      initClock
+    } = useThree(scene, camera, renderer, point, ambient, axesHelper, stats, cameraControls, clock)
 
     // 初始化模型
     function initModel () {
@@ -71,6 +75,7 @@ export default defineComponent({
     function render () {
       scene && renderer.render(scene, camera)
       stats && stats.update()
+      cameraControls && cameraControls.update(clock.getDelta())
       animation = requestAnimationFrame(render)
       mesh.rotateY(0.005)
     }
@@ -81,8 +86,9 @@ export default defineComponent({
       camera = initCamera()
       renderer = initRenderer(el)
       stats = initStats(el)
+      cameraControls = initControls()
+      clock = initClock()
       initLight()
-      initControls()
       initHelpers()
       initModel()
       render()
@@ -96,6 +102,7 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       cancelAnimationFrame(animation)
+      cameraControls && cameraControls.dispose()
       window.removeEventListener('resize', windowResize)
     })
 

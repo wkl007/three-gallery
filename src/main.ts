@@ -1,15 +1,14 @@
 import { createApp } from 'vue'
 import App from '@/App.vue'
-import router from '@/router'
-import store from '@/store'
+import { setupRouter } from '@/router'
+import { setupStore } from '@/store'
+import { setupAntd } from '@/configs/antd'
 import '@/configs/registerServiceWorker'
-import { useAntd } from '@/configs/antd'
 
 const app = createApp(App)
 
-useAntd(app)
+setupRouter(app) // vue-router
+setupStore(app) // vuex
+setupAntd(app) // antd
 
-app
-  .use(store)
-  .use(router)
-  .mount('#app')
+app.mount('#app')

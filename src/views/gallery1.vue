@@ -3,12 +3,22 @@
 </template>
 
 <script lang="ts">
+import type {
+  AmbientLight,
+  AxesHelper,
+  Clock,
+  DirectionalLight,
+  Mesh,
+  OrthographicCamera,
+  Scene,
+  WebGLRenderer
+} from 'three'
 import { defineComponent } from 'vue'
 import * as THREE from 'three'
-import { AmbientLight, AxesHelper, DirectionalLight, Mesh, OrthographicCamera, Scene, WebGLRenderer } from 'three'
+import CameraControls from 'camera-controls'
 import Stats from 'stats.js'
 
-const OrbitControls = require('three-orbit-controls')(THREE)
+CameraControls.install({ THREE })
 
 const x: number = window.innerWidth
 const y: number = window.innerHeight
@@ -25,7 +35,9 @@ let scene: Scene,
   stats: Stats,
   animation: number,
   three: HTMLElement,
-  controls
+  cameraControls: CameraControls
+
+const clock: Clock = new THREE.Clock()
 
 export default defineComponent({
   name: 'gallery1',
@@ -37,6 +49,7 @@ export default defineComponent({
   beforeUnmount () {
     window.addEventListener('resize', this.windowResize)
     cancelAnimationFrame(animation)
+    cameraControls.dispose()
   },
   methods: {
     // 初始化
@@ -83,7 +96,8 @@ export default defineComponent({
     },
     // 初始化轨道控制插件
     initControls () {
-      controls = new OrbitControls(camera, renderer.domElement)
+      cameraControls = new CameraControls(camera, renderer.domElement)
+      cameraControls.draggingDampingFactor = 1 // 拖动阻尼惯性
     },
     // 初始化辅助内容
     initHelpers () {
@@ -113,8 +127,9 @@ export default defineComponent({
     // 渲染
     render () {
       renderer.render(scene, camera)
-      animation = requestAnimationFrame(this.render)
       stats.update()
+      cameraControls.update(clock.getDelta())
+      animation = requestAnimationFrame(this.render)
     },
     // 窗口缩放事件
     windowResize () {

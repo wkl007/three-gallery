@@ -13,11 +13,12 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeUnmount, onMounted, ref, reactive } from 'vue'
+import type { AmbientLight, AxesHelper, Clock, DirectionalLight, OrthographicCamera, Scene, WebGLRenderer } from 'three'
 import * as THREE from 'three'
-import { AmbientLight, AxesHelper, DirectionalLight, OrthographicCamera, Scene, Texture, WebGLRenderer } from 'three'
+import { defineComponent, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import Stats from 'stats.js'
+import CameraControls from 'camera-controls'
 import { useThree } from '@/hooks'
 
 let scene: Scene,
@@ -27,7 +28,8 @@ let scene: Scene,
   ambient: AmbientLight,
   axesHelper: AxesHelper,
   stats: Stats,
-  controls: never,
+  cameraControls: CameraControls,
+  clock: Clock,
   animation: number,
   objectModel: any
 
@@ -55,8 +57,9 @@ export default defineComponent({
       initHelpers,
       initStats,
       windowResize,
-      initControls
-    } = useThree(scene, camera, renderer, point, ambient, axesHelper, stats, controls)
+      initControls,
+      initClock
+    } = useThree(scene, camera, renderer, point, ambient, axesHelper, stats, cameraControls, clock)
 
     // 初始化模型
     function initModel () {
@@ -78,6 +81,7 @@ export default defineComponent({
     function render () {
       scene && renderer.render(scene, camera)
       stats && stats.update()
+      cameraControls && cameraControls.update(clock.getDelta())
       objectModel && objectModel.rotateY(0.01)
       animation = requestAnimationFrame(render)
     }
@@ -90,8 +94,9 @@ export default defineComponent({
 
       renderer = initRenderer(el)
       stats = initStats(el)
+      cameraControls = initControls()
+      clock = initClock()
       initLight()
-      initControls()
       initHelpers()
       initModel()
       render()
@@ -105,6 +110,7 @@ export default defineComponent({
 
     onBeforeUnmount(() => {
       cancelAnimationFrame(animation)
+      cameraControls && cameraControls.dispose()
       window.removeEventListener('resize', windowResize)
     })
 
