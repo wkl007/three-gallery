@@ -39,7 +39,6 @@
     "register-service-worker": "^1.7.1",
     "stats.js": "^0.17.0",
     "three": "^0.122.0",
-    "three-orbit-controls": "^82.1.0",
     "vue": "^3.0.2",
     "vue-router": "^4.0.0-rc.2",
     "vuex": "^4.0.0-rc.1"

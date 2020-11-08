@@ -10774,11 +10774,6 @@ thread-loader@^2.1.3:
     loader-utils "^1.1.0"
     neo-async "^2.6.0"
 
-three-orbit-controls@^82.1.0:
-  version "82.1.0"
-  resolved "https://registry.npm.taobao.org/three-orbit-controls/download/three-orbit-controls-82.1.0.tgz#11a7f33d0a20ecec98f098b37780f6537374fab4"
-  integrity sha1-EafzPQog7OyY8Jizd4D2U3N0+rQ=
-
 three@^0.122.0:
   version "0.122.0"
   resolved "https://registry.npm.taobao.org/three/download/three-0.122.0.tgz?cache=0&sync_timestamp=1603886217885&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fthree%2Fdownload%2Fthree-0.122.0.tgz#bd9ed8a8820074856e8ba7b63fe0a65176e01aeb"
