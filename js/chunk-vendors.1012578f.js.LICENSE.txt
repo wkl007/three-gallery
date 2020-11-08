@@ -1,0 +1,13 @@
+/*!
+  * vue-router v4.0.0-rc.2
+  * (c) 2020 Eduardo San Martin Morote
+  * @license MIT
+  */
+
+/*!
+ * vuex v4.0.0-rc.1
+ * (c) 2020 Evan You
+ * @license MIT
+ */
+
+//! moment.js
