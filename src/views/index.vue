@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title">Three.js学习案例演示</h1>
     <a-list
-      :grid="{gutter:16,column:4}"
+      :grid="{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 3, xl: 4, xxl: 4 }"
       :data-source="list"
     >
       <template v-slot:renderItem="{item,index}">
@@ -13,7 +13,7 @@
           >
             <template v-slot:cover>
               <img
-                class="image"
+                class="img"
                 alt="example"
                 :src="item.imageUrl"
               />
@@ -116,8 +116,10 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
+@import "~ant-design-vue/lib/style/themes/default";
+
 .container {
-  width: 1200px;
+  max-width: 1200px;
   margin: 0 auto;
 
   .title {
@@ -125,10 +127,16 @@ export default defineComponent({
     text-align: center;
   }
 
-  .image {
-    width: 286px;
+  .img {
+    width: 100%;
     height: 174px;
     object-fit: cover;
+  }
+}
+
+@media screen and (max-width: @screen-lg) {
+  .container {
+    padding: 0 24px;
   }
 }
 </style>
