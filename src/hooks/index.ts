@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import { AmbientLight, AxesHelper, Clock, DirectionalLight, OrthographicCamera, Scene, WebGLRenderer } from 'three'
+import type { AmbientLight, AxesHelper, Clock, DirectionalLight, OrthographicCamera, Scene, WebGLRenderer } from 'three'
 import CameraControls from 'camera-controls'
 import Stats from 'stats.js'
 
@@ -81,7 +81,7 @@ export function useThree (scene: Scene, camera: OrthographicCamera, renderer: We
 
   // 初始化clock
   function initClock () {
-    clock = new Clock()
+    clock = new THREE.Clock()
     return clock
   }
 
