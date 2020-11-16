@@ -99,6 +99,11 @@ export default defineComponent({
         name: '虫洞粒子特效',
         path: '/gallery11',
         imageUrl: `${imageUrl}20201011134428.png`
+      },
+      {
+        name: '蜜蜂模型',
+        path: '/gallery12',
+        imageUrl: `${imageUrl}20201116175303.png`
       }
     ])
 

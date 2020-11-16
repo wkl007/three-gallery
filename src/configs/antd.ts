@@ -1,5 +1,5 @@
 import type { App } from 'vue'
-import { Avatar, Button, Card, ConfigProvider, List } from 'ant-design-vue'
+import { Avatar, Button, Card, ConfigProvider, List, Select, Progress } from 'ant-design-vue'
 
 /**
  * antd 按需加载配置
@@ -12,4 +12,6 @@ export function setupAntd (app: App<Element>): void {
     .use(Card)
     .use(ConfigProvider)
     .use(List)
+    .use(Select)
+    .use(Progress)
 }
