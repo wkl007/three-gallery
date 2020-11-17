@@ -4,8 +4,8 @@
 
 <script lang="ts">
 import type { AmbientLight, AxesHelper, Clock, DirectionalLight, OrthographicCamera, Scene, WebGLRenderer } from 'three'
-import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import * as THREE from 'three'
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader'
 import Stats from 'stats.js'
 import CameraControls from 'camera-controls'

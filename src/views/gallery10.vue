@@ -14,8 +14,8 @@ import type {
   Scene,
   WebGLRenderer
 } from 'three'
-import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import * as THREE from 'three'
+import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import Stats from 'stats.js'
 import CameraControls from 'camera-controls'
 import { useThree } from '@/hooks'

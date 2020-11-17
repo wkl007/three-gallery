@@ -35,14 +35,14 @@ import type {
   Scene,
   WebGLRenderer
 } from 'three'
-import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 import * as THREE from 'three'
-import { defineComponent, onBeforeUnmount, onMounted, ref, reactive } from 'vue'
+import { AnimationAction } from 'three'
+import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
+import { defineComponent, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import Stats from 'stats.js'
 import CameraControls from 'camera-controls'
 import { useThree } from '@/hooks'
-import { AnimationAction } from 'three'
 
 let scene: Scene,
   camera: OrthographicCamera,
