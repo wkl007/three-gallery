@@ -175,6 +175,8 @@ export default defineComponent({
 </script>
 
 <style scoped lang="less">
+@import "~ant-design-vue/lib/style/themes/default";
+
 .select-wrapper {
   position: absolute;
   top: 0;
@@ -200,6 +202,19 @@ export default defineComponent({
     h3 {
       font-size: 24px;
       text-align: center;
+    }
+  }
+}
+
+@media screen and (max-width: @screen-md) {
+  .select-wrapper {
+    top: auto;
+    bottom: 0;
+  }
+
+  .progress-container {
+    .progress-wrapper {
+      width: 80%;
     }
   }
 }

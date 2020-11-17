@@ -19,6 +19,7 @@ import { defineComponent, onBeforeUnmount, onMounted, ref } from 'vue'
 import * as THREE from 'three'
 import Stats from 'stats.js'
 import CameraControls from 'camera-controls'
+import { useThrottleFn } from '@vueuse/core'
 import { useThree } from '@/hooks'
 
 let scene: Scene,
@@ -103,7 +104,8 @@ export default defineComponent({
       }
     }
 
-    function windowResize () {
+    // 窗口缩放事件
+    const windowResize = useThrottleFn(() => {
       const innerWidth: number = window.innerWidth
       const innerHeight: number = window.innerHeight
       // 重置透视投影相机
@@ -112,7 +114,7 @@ export default defineComponent({
       // 全屏情况下：设置观察范围长宽比aspect为窗口宽高比
       camera.aspect = innerWidth / innerHeight
       camera.updateProjectionMatrix()
-    }
+    }, 100)
 
     // 初始化
     function init (el: HTMLElement) {

@@ -1,7 +1,8 @@
-import * as THREE from 'three'
 import type { AmbientLight, AxesHelper, Clock, DirectionalLight, OrthographicCamera, Scene, WebGLRenderer } from 'three'
+import * as THREE from 'three'
 import CameraControls from 'camera-controls'
 import Stats from 'stats.js'
+import { useThrottleFn } from '@vueuse/core'
 
 CameraControls.install({ THREE })
 
@@ -103,8 +104,7 @@ export function useThree (scene: Scene, camera: OrthographicCamera, renderer: We
   }
 
   // 窗口缩放事件
-  function windowResize () {
-    // TODO 窗口滚动事件添加截流函数
+  const windowResize = useThrottleFn(() => {
     const innerWidth: number = window.innerWidth
     const innerHeight: number = window.innerHeight
     // 重置正投影相机相关参数
@@ -118,7 +118,7 @@ export function useThree (scene: Scene, camera: OrthographicCamera, renderer: We
     // 如果相机的一些属性发生了变化，需要执行updateProjectionMatrix ()方法更新相机的投影矩阵
     camera.updateProjectionMatrix()
     renderer.setSize(innerWidth, innerHeight)
-  }
+  }, 100)
 
   return {
     initScene,
