@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/three-gallery/precache-manifest.c9b2f1fccfdd4b33eade15cfca96c4d4.js"
+  "/three-gallery/precache-manifest.1330dbe4c01b8af507c7c1e8dc5d700c.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "three-gallery"});
