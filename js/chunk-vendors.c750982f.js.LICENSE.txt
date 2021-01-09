@@ -1,5 +1,5 @@
 /*!
-  * vue-router v4.0.1
+  * vue-router v4.0.2
   * (c) 2020 Eduardo San Martin Morote
   * @license MIT
   */
