@@ -40,14 +40,10 @@ module.exports = {
       // 去console
       new TerserPlugin({
         terserOptions: {
-          warnings: false,
           compress: {
-            drop_debugger: true,
             drop_console: true
           }
-        },
-        sourceMap: false,
-        parallel: true
+        }
       }),
       // gzip压缩
       new CompressionWebpackPlugin({
