@@ -8,13 +8,8 @@
     "build": "vue-cli-service build",
     "lint": "npm run lint:code && npm run lint:style",
     "lint:code": "vue-cli-service lint",
-    "lint:style": "vue-cli-service lint:style"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
-    }
+    "lint:style": "vue-cli-service lint:style",
+    "postinstall": "husky install"
   },
   "lint-staged": {
     "src/**/*.{js,ts,tsx,vue}": [
